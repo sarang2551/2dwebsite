@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% import "bootstrap4/form.html" as wtf %}
+
+{% block content %}
+<h2 style="text-align: center;">{% block title %} Are you importing enough? {% endblock %}</h2>
+
+{{ wtf.render_form(form) }}
+{% if results %}
+<div  style="text-align: center;">
+    <h2> Results </h2>
+    <span> Normalised values provided: </span>
+    <p> Population: {{results["mean_population"]}}</p>
+    <p> Arable Land: {{results["mean_arable"]}}</p>
+    <p> Political_Index: {{ results["mean_political"] }}</p>
+    <p> Crisis_score: {{ results["cri_score"] }}</p>
+    <p> Local Agriculture: {{ results["local_agriculture"] }}</p>
+    <p> Agriculture to GDP: {{ results["credit_agriculture_millions"] }}</p>
+    <h3>Predicted Value: {{ results["prediction"] }}</h3>
+    {% if results["less"] %}
+    <h3 style="color: red;">{{ results['comparison'] }}</h3>
+    {% else %}
+    <h3 style="color: green;">{{ results['comparison'] }}</h3>
+    {% endif %}
+    <ol>
+    <li><a href="{{ url_for('cri_score') }}"> Crisis score graph </a></li>
+    <li><a href="{{url_for('mean_population') }}"> Population graph </a></li>
+    <li><a href="{{url_for('local_agriculture') }}"> Local agriculture graph </a></li>
+    <li><a href="{{url_for('mean_arable') }}"> Arable Land graph </a></li>
+    <li><a href="{{url_for('credit_agriculture') }}"> Agriculture to GDP graph </a></li>
+    <li><a href="{{url_for('mean_political') }}"> Political graph </a></li>
+    </ol>
+    <form action="{{ url_for('predict_page') }}">
+        <button style="border-radius: 12px;padding-bottom: 20px;background-color: aqua;">
+            Predict again! 
+        </button>
+    </form>
+</div>
+{% endif %}
+
+
+{% endblock %}
